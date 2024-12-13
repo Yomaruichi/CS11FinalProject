@@ -8,6 +8,7 @@ from tkinter import ttk
 #JD -
 
 def main():
+    print("hello world")
     pass
 
 if __name__ == "__main__":
