@@ -43,14 +43,16 @@ class actualGame:
             grid[emptyIndex], grid[index] = grid[index], grid[emptyIndex]
             actualGame.updateButton()
             if actualGame.isSolved():
-                print("You Win!")
+                print("You Win! Gamer!")
+                tk.Label(mainWindow, text="You Win!", font=("Arial", 30), bg="blue").place(relx=.5, rely=.5, anchor="center")
+                tk.lift()
 
     def updateButton():
         for i in range(size):
             for j in range(size):
                 ifTile = grid[i * size + j] #ifTile is the value of the grid at the index i * size + j, if it is None, it will be blank
                 buttons[i][j].config(text=ifTile if ifTile else "") #adds the text in the middle of each button in the tile\
-                    
+                    #tesat
     def IsSolvable():
         inversionCount = 0
         for i in range(len(grid)-1):
@@ -116,7 +118,7 @@ if __name__ == "__main__": #will only run if the file is run directly
     width = resolution[0]
     height = resolution[1]
     scalingRef = resolution[2] * resolution[3]
-    defaultGridSize = 4
+    defaultGridSize = 3
     size = defaultGridSize
     status = 0
 
