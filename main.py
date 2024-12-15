@@ -11,7 +11,7 @@ from random import shuffle
 #JD -
 
 class actualGame:
-    def main(master, size): #main game function
+    def main(master, size): #main game function for this app
         global grid #Is needed to be able to access the grid variable from the shuffleTile() function
         global buttons #Is needed to be able to access the buttons variable from the updateButton() function
         
@@ -20,12 +20,16 @@ class actualGame:
         for i in range(size):
             rows = [] #placeholder for the rows
             for j in range(size):
-                button = tk.Button(master, font=("Arial",16), height=round(4*scalingRef), width=round(10*scalingRef), command=lambda i=i, j=j: actualGame.moveTile(i, j), bg = "yellow", activebackground="green",cursor= "dotbox") #creates the buttons, lambda is used to pass the i and j values to the moveTile function cuz command= only accepts lambda arguments
-                button.grid(row=i, column=j) #adds it to the tkinter grid
+                button = tk.Button(master, font=("Arial",16), command=lambda i=i, j=j: actualGame.moveTile(i, j), bg = "yellow", activebackground="green",cursor= "dotbox") #creates the buttons, lambda is used to pass the i and j values to the moveTile function cuz command= only accepts lambda arguments
+                button.grid(row=i, column=j, sticky="news") #adds it to the tkinter grid
                 rows.append(button) #adds the buttons directory to the rows list
             buttons.append(rows) #adds the rows list (is a row of buttons) to the buttons list
         actualGame.updateButton() #updates the grid with the buttons
         actualGame.shuffleTile() #randomizer
+
+        for i in range(size): #this allows the buttons to resize with the frame depending on the grid size
+            master.columnconfigure(i, weight=1) 
+            master.rowconfigure(i, weight=1)
         
     def moveTile(row, column):
         index = row * size + column
@@ -87,8 +91,8 @@ def gotoGameScreen():
         trFrame.place(relx = .4, rely = .1, anchor="ne", width = 200, height = 100)
 
         buttonsFrame = tk.Frame(mainWindow,bg ="blue")
-        buttonsFrame.place(relx=.5, rely=.55, anchor="center")
-        actualGame.main(buttonsFrame, defaultGridSize)
+        buttonsFrame.place(relx=.5, rely=.55, anchor="center", width=500, height=500)
+        actualGame.main(buttonsFrame, size)
 
 if __name__ == "__main__": #will only run if the file is run directly
     mainWindow = tk.Tk()
@@ -97,7 +101,7 @@ if __name__ == "__main__": #will only run if the file is run directly
     width = resolution[0]
     height = resolution[1]
     scalingRef = resolution[2] * resolution[3]
-    defaultGridSize = 4
+    defaultGridSize = 10
     size = defaultGridSize
     status = 0
 
