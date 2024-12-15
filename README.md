@@ -7,3 +7,6 @@ what i did:
 - placed the entire grid puzzle sliding thing under a class (just use {CLASSNAME}.{FUNCTIONNAME}({ARGUMENTS}) to call it)
 - blue is for difficulty rating placeholder
 - green is for timer placeholder
+  
+PS
+there may be legacy code in the project
