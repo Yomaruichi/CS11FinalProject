@@ -38,15 +38,30 @@ class actualGame:
 
             grid[emptyIndex], grid[index] = grid[index], grid[emptyIndex]
             actualGame.updateButton()
+            if actualGame.isSolved():
+                print("You Win!")
 
     def updateButton():
         for i in range(size):
             for j in range(size):
                 ifTile = grid[i * size + j] #ifTile is the value of the grid at the index i * size + j, if it is None, it will be blank
                 buttons[i][j].config(text=ifTile if ifTile else "") #adds the text in the middle of each button in the tile\
+                    
+    def IsSolvable():
+        inversionCount = 0
+        for i in range(len(grid)-1):
+            for j in range(i+1, len(grid)):
+                if grid[i] and grid[j] and grid[i] > grid[j]: #checks if i and j exists and i is greater than j,
+                    inversionCount += 1
+        return inversionCount % 2 == 0 #if inversion count is odd, it is not solvable, if it is even, it is solvable
+    
+    def isSolved():
+        return grid == [x for x in range(1, size*size)] + [None] #checks if the grid is equal to the numbers in the grid + None
 
     def shuffleTile():
         shuffle(grid)
+        while not actualGame.IsSolvable() or actualGame.isSolved():
+            shuffle(grid)
         actualGame.updateButton()
     
     def timer():
