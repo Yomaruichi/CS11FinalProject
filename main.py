@@ -116,7 +116,7 @@ if __name__ == "__main__": #will only run if the file is run directly
     width = resolution[0]
     height = resolution[1]
     scalingRef = resolution[2] * resolution[3]
-    defaultGridSize = 10
+    defaultGridSize = 4
     size = defaultGridSize
     status = 0
 
