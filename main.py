@@ -1,5 +1,8 @@
 import tkinter as tk
+from tkinter import ttk as ctk
 from random import shuffle
+
+
 #Roles:
 #JB - 
 #Seth - 
@@ -7,50 +10,101 @@ from random import shuffle
 #Drew -
 #JD -
 
-def main(master, size): #main game function
-    global grid #Is needed to be able to access the grid variable from the shuffleTile() function
-    global buttons #Is needed to be able to access the buttons variable from the updateButton() function
-    
-    grid = [x for x in range(1, size*size)] + [None] #numbers that will be on the grid game + including the blank space 
-    buttons = [] #placeholder for the buttons that will be created
-    for i in range(size):
-        rows = [] #placeholder for the rows
-        for j in range(size):
-            button = tk.Button(master, width=5, command=lambda i=i, j=j: moveTile(i, j)) #creates the buttons, lambda is used to pass the i and j values to the moveTile function cuz command= only accepts lambda arguments
-            button.grid(row=i, column=j) #adds it to the tkinter grid
-            rows.append(button) #adds the buttons directory to the rows list
-        buttons.append(rows) #adds the rows list (is a row of buttons) to the buttons list
-    updateButton() #updates the grid with the buttons
-    shuffleTile() #randomizer
-    
-def moveTile(row, column):
-    index = row * size + column 
-    emptyIndex = grid.index(None) 
-    if index in [emptyIndex - 1, emptyIndex + 1, emptyIndex - size, emptyIndex + size]: #checks if the tile is adjacent to the empty tile
-        grid[emptyIndex], grid[index] = grid[index], grid[emptyIndex] #swaps the empty tile with the tile
-        updateButton()
+class actualGame:
+    def main(master, size): #main game function
+        global grid #Is needed to be able to access the grid variable from the shuffleTile() function
+        global buttons #Is needed to be able to access the buttons variable from the updateButton() function
+        
+        grid = [x for x in range(1, size*size)] + [None] #numbers that will be on the grid game + including the blank space 
+        buttons = [] #placeholder for the buttons that will be created
+        for i in range(size):
+            rows = [] #placeholder for the rows
+            for j in range(size):
+                button = tk.Button(master, font=("Arial",16), height=round(4*scalingRef), width=round(10*scalingRef), command=lambda i=i, j=j: actualGame.moveTile(i, j), bg = "yellow", activebackground="green",cursor= "dotbox") #creates the buttons, lambda is used to pass the i and j values to the moveTile function cuz command= only accepts lambda arguments
+                button.grid(row=i, column=j) #adds it to the tkinter grid
+                rows.append(button) #adds the buttons directory to the rows list
+            buttons.append(rows) #adds the rows list (is a row of buttons) to the buttons list
+        actualGame.updateButton() #updates the grid with the buttons
+        actualGame.shuffleTile() #randomizer
+        
+    def moveTile(row, column):
+        index = row * size + column
+        emptyIndex = grid.index(None)
+        empty_col = emptyIndex % size
+        
+        if index in [emptyIndex - 1, emptyIndex + 1, emptyIndex - size, emptyIndex + size]:
+            if (empty_col == 0 and column == size - 1) or (empty_col == size - 1 and column == 0): # check if we are at the edge
+                return  # prevents edging
 
-def updateButton():
-    for i in range(size):
-        for j in range(size):
-            ifTile = grid[i * size + j] #ifTile is the value of the grid at the index i * size + j, if it is None, it will be blank
-            buttons[i][j].config(text=ifTile if ifTile else "") #adds the text in the middle of each button in the tile
+            grid[emptyIndex], grid[index] = grid[index], grid[emptyIndex]
+            actualGame.updateButton()
+
+    def updateButton():
+        for i in range(size):
+            for j in range(size):
+                ifTile = grid[i * size + j] #ifTile is the value of the grid at the index i * size + j, if it is None, it will be blank
+                buttons[i][j].config(text=ifTile if ifTile else "") #adds the text in the middle of each button in the tile\
+
+    def shuffleTile():
+        shuffle(grid)
+        actualGame.updateButton()
+    
+    def timer():
+        while currentTime <= startTime:
+            currentTime -= 1
             
-def shuffleTile():
-    shuffle(grid)
-    updateButton()
+            
+
+
+
+def mainMenu():
+
+    pass
+
+def getnativeResolution():
+    baseResolution = "600x900"
+    scaledResolution = 0.75
+
+    userHeight = mainWindow.winfo_screenheight()
+    userWidth = mainWindow.winfo_screenwidth()
+
+    calculatedHeight = userHeight / (int(baseResolution.split("x")[1]))
+    calculatedWidth = userWidth / (int(baseResolution.split("x")[0]))
+    scaleFactor = min(calculatedHeight, calculatedWidth)
+
+    actualHeight = round((int(baseResolution.split("x")[1]) * scaleFactor * scaledResolution)) 
+    actualWidth = round((int(baseResolution.split("x")[0]) * scaleFactor * scaledResolution))
+
+    return (actualWidth, actualHeight, scaleFactor, scaledResolution)
+    
+def gotoGameScreen():
+    status = 1
+    if status == 1:
+        tlFrame = tk.Frame(mainWindow, bg ="blue")
+        tlFrame.place(relx = .6, rely = .1, anchor="nw", width = 200, height = 100)
+
+        trFrame = tk.Frame(mainWindow, bg ="green")
+        trFrame.place(relx = .4, rely = .1, anchor="ne", width = 200, height = 100)
+
+        buttonsFrame = tk.Frame(mainWindow,bg ="blue")
+        buttonsFrame.place(relx=.5, rely=.55, anchor="center")
+        actualGame.main(buttonsFrame, defaultGridSize)
 
 if __name__ == "__main__": #will only run if the file is run directly
-    status = True
-    while status:
-        try:
-            size = int(input("Enter the size of the game (must be greater than 3): "))
-            if size >=3:
-                root = tk.Tk()
-                main(root, size)
-                root.mainloop()
-                status = False #stops the game
-            else:
-                print("Invalid input. Please enter a number greater than 3.")
-        except ValueError:
-            print("Invalid input. Please enter a number.")
+    mainWindow = tk.Tk()
+
+    resolution = getnativeResolution()
+    width = resolution[0]
+    height = resolution[1]
+    scalingRef = resolution[2] * resolution[3]
+    defaultGridSize = 4
+    size = defaultGridSize
+    status = 0
+
+    gotoGameScreen()
+
+    mainWindow.title("Sliding Puzzle")
+    mainWindow.geometry(f"{width}x{height}")
+    mainWindow.configure(bg="brown")
+    mainWindow.resizable(0,0)
+    mainWindow.mainloop()
