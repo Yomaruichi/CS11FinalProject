@@ -93,7 +93,7 @@ def gotoGameScreen():
     global size
     newSize = None
     while newSize is None:
-        newSize = simpledialog.askinteger("Grid Size", "Enter the grid size (e.g., 3 for 3x3):", parent=mainWindow, minvalue=2, maxvalue=10)
+        newSize = simpledialog.askinteger("Grid Size", "Enter the grid size (e.g., 3 for 3x3):", parent=mainWindow, minvalue=3, maxvalue=10)
         size = newSize
         if newSize is None:
             tk.messagebox.showwarning("Input Required", "You must enter a grid size to start the game.")
