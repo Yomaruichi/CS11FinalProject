@@ -127,14 +127,6 @@ if __name__ == "__main__": #will only run if the file is run directly
     width = resolution[0]
     height = resolution[1]
     scalingRef = resolution[2] * resolution[3]
-<<<<<<< Updated upstream
-    defaultGridSize = 4
-    size = defaultGridSize
-    status = 0
-
-    gotoGameScreen()
-=======
->>>>>>> Stashed changes
 
     mainWindow.title("Sliding Puzzle")
     mainWindow.geometry(f"{width}x{height}")
