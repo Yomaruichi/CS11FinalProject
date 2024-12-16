@@ -44,14 +44,10 @@ class actualGame:
             grid[emptyIndex], grid[index] = grid[index], grid[emptyIndex]
             actualGame.updateButton()
             if actualGame.isSolved():
-<<<<<<< Updated upstream
-                print("You Win!")
-=======
                 print("You Win! Gamer!")
                 a = tk.Label(mainWindow, text="You Win!", font=("Arial", 30), bg="blue").place(relx=.5, rely=.5, anchor="center")
                 b = tk.Button(mainWindow, text="Play Again",font=("Arial", 30), bg="gray", command=gotoGameScreen).place(relx=.5, rely=.65, anchor="center")
                 c =tk.Button(mainWindow, text="exit", font=("Arial", 30), bg="red", command=mainWindow.destroy).place(relx=.5, rely=.8, anchor="center")
->>>>>>> Stashed changes
 
     def updateButton():
         for i in range(size):
