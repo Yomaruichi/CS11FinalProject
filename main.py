@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk as ctk
 from random import shuffle
+from tkinter import simpledialog
 
 
 #Roles:
@@ -43,7 +44,14 @@ class actualGame:
             grid[emptyIndex], grid[index] = grid[index], grid[emptyIndex]
             actualGame.updateButton()
             if actualGame.isSolved():
+<<<<<<< Updated upstream
                 print("You Win!")
+=======
+                print("You Win! Gamer!")
+                a = tk.Label(mainWindow, text="You Win!", font=("Arial", 30), bg="blue").place(relx=.5, rely=.5, anchor="center")
+                b = tk.Button(mainWindow, text="Play Again",font=("Arial", 30), bg="gray", command=gotoGameScreen).place(relx=.5, rely=.65, anchor="center")
+                c =tk.Button(mainWindow, text="exit", font=("Arial", 30), bg="red", command=mainWindow.destroy).place(relx=.5, rely=.8, anchor="center")
+>>>>>>> Stashed changes
 
     def updateButton():
         for i in range(size):
@@ -67,18 +75,6 @@ class actualGame:
         while not actualGame.IsSolvable() or actualGame.isSolved():
             shuffle(grid)
         actualGame.updateButton()
-    
-    def timer():
-        while currentTime <= startTime:
-            currentTime -= 1
-            
-            
-
-
-
-def mainMenu():
-
-    pass
 
 def getnativeResolution():
     baseResolution = "600x900"
@@ -97,30 +93,48 @@ def getnativeResolution():
     return (actualWidth, actualHeight, scaleFactor, scaledResolution)
     
 def gotoGameScreen():
-    status = 1
-    if status == 1:
-        tlFrame = tk.Frame(mainWindow, bg ="blue")
-        tlFrame.place(relx = .6, rely = .1, anchor="nw", width = 200, height = 100)
+    global iteration
+    global size
+    newSize = None
+    while newSize is None:
+        newSize = simpledialog.askinteger("Grid Size", "Enter the grid size (e.g., 3 for 3x3):", parent=mainWindow, minvalue=2, maxvalue=10)
+        size = newSize
+        if newSize is None:
+            tk.messagebox.showwarning("Input Required", "You must enter a grid size to start the game.")
+    if iteration > 0:
+        for widget in mainWindow.winfo_children():
+            widget.destroy()
+    tlFrame = tk.Frame(mainWindow, bg ="blue")
+    tlFrame.place(relx = .6, rely = .1, anchor="nw", width = 200, height = 100)
 
-        trFrame = tk.Frame(mainWindow, bg ="green")
-        trFrame.place(relx = .4, rely = .1, anchor="ne", width = 200, height = 100)
+    trFrame = tk.Frame(mainWindow, bg ="green")
+    trFrame.place(relx = .4, rely = .1, anchor="ne", width = 200, height = 100)
 
-        buttonsFrame = tk.Frame(mainWindow,bg ="blue")
-        buttonsFrame.place(relx=.5, rely=.55, anchor="center", width=500, height=500)
-        actualGame.main(buttonsFrame, size)
+    buttonsFrame = tk.Frame(mainWindow,bg ="blue")
+    buttonsFrame.place(relx=.5, rely=.55, anchor="center", width=500, height=500)
+    iteration += 1
+    actualGame.main(buttonsFrame, size)
 
 if __name__ == "__main__": #will only run if the file is run directly
     mainWindow = tk.Tk()
 
+    defaultGridSize = 3
+    size = defaultGridSize
+    iteration = 0
+
+    gotoGameScreen()
     resolution = getnativeResolution()
     width = resolution[0]
     height = resolution[1]
     scalingRef = resolution[2] * resolution[3]
+<<<<<<< Updated upstream
     defaultGridSize = 4
     size = defaultGridSize
     status = 0
 
     gotoGameScreen()
+=======
+>>>>>>> Stashed changes
 
     mainWindow.title("Sliding Puzzle")
     mainWindow.geometry(f"{width}x{height}")
